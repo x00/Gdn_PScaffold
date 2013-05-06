@@ -18,7 +18,8 @@ $PermittedOps = array(
   'dir::',
   'refactor',
   'bklimit::',
-  'help'
+  'help',
+  'light'
 );
 
 $Options = getopt("", $PermittedOps);
@@ -73,7 +74,7 @@ if(file_exists($Dir.DS.'default.php')){
   $PluginFile = $Dir.DS.'default.php';
 }
 
-
+$IsLight = ArrayI('light',$Options,NULL)!==NULL;
 
 $PluginGlob = glob($Dir.DS.'*plugin.php');
 
@@ -204,10 +205,15 @@ if(!$PluginFile){
     }
     file_put_contents($Dir.DS.'ps_example'.DS.basename($PluginFile), ParseTemplate($ScaffoldDir.DS.'plugin.tpl.php', $PluginInfo));
     file_put_contents($Dir.DS.'ps_example'.DS.'class.utility.php', ParseTemplate($ScaffoldDir.DS.'utility.tpl.php', $PluginInfo));
-    file_put_contents($Dir.DS.'ps_example'.DS.'class.api.php', ParseTemplate($ScaffoldDir.DS.'api.tpl.php', $PluginInfo));
-    file_put_contents($Dir.DS.'ps_example'.DS.'class.settings.php', ParseTemplate($ScaffoldDir.DS.'settings.tpl.php', $PluginInfo));
+    if(!$IsLight){
+      file_put_contents($Dir.DS.'ps_example'.DS.'class.api.php', ParseTemplate($ScaffoldDir.DS.'api.tpl.php', $PluginInfo));
+      file_put_contents($Dir.DS.'ps_example'.DS.'class.settings.php', ParseTemplate($ScaffoldDir.DS.'settings.tpl.php', $PluginInfo));
+    }
     file_put_contents($Dir.DS.'ps_example'.DS.'class.ui.php', ParseTemplate($ScaffoldDir.DS.'ui.tpl.php', $PluginInfo));
     file_put_contents($Dir.DS.'ps_example'.DS.'readme.markdown', ParseTemplate($ScaffoldDir.DS.'readme.tpl.markdown', $PluginInfo));
+    if($IsLight){
+       RefactorClass($Dir.DS.'ps_example'.DS.'class.ui.php', ArrayI('Index', $PluginInfo, $DirName).'[A-Za-z0-9]+', ArrayI('Index', $PluginInfo, $DirName).'Utility' , '[A-Za-z][A-Za-z0-9]+');
+    }
     print 'Creating ps_example plugin files in ps_example!'.EOL;
     
 
@@ -219,14 +225,17 @@ if(!file_exists($Dir.DS.'class.utility.php')){
    file_put_contents($Dir.DS.'class.utility.php', ParseTemplate($ScaffoldDir.DS.'utility.tpl.php', $PluginInfo));
 }
 
-if(!file_exists($Dir.DS.'class.api.php')){
-  print 'Creating plugin file class.api.php'.EOL;
-  file_put_contents($Dir.DS.'class.api.php', ParseTemplate($ScaffoldDir.DS.'api.tpl.php', $PluginInfo));
-}
-
-if(!file_exists($Dir.DS.'class.settings.php')){
-  print 'Creating plugin file class.settings.php'.EOL;
-  file_put_contents($Dir.DS.'class.settings.php', ParseTemplate($ScaffoldDir.DS.'settings.tpl.php', $PluginInfo));
+if(!$IsLight){
+  if(!file_exists($Dir.DS.'class.api.php')){
+    print 'Creating plugin file class.api.php'.EOL;
+    file_put_contents($Dir.DS.'class.api.php', ParseTemplate($ScaffoldDir.DS.'api.tpl.php', $PluginInfo));
+  }
+  
+  if(!file_exists($Dir.DS.'class.settings.php')){
+    print 'Creating plugin file class.settings.php'.EOL;
+    file_put_contents($Dir.DS.'class.settings.php', ParseTemplate($ScaffoldDir.DS.'settings.tpl.php', $PluginInfo));
+  }
+  
 }
 
 if(!file_exists($Dir.DS.'class.ui.php')){
@@ -234,39 +243,42 @@ if(!file_exists($Dir.DS.'class.ui.php')){
   file_put_contents($Dir.DS.'class.ui.php', ParseTemplate($ScaffoldDir.DS.'ui.tpl.php', $PluginInfo));
 }
 
+
 if(!file_exists($Dir.DS.'readme.markdown')){
   print 'Creating plugin file readme.markdown'.EOL;
   file_put_contents($Dir.DS.'readme.markdown', ParseTemplate($ScaffoldDir.DS.'readme.tpl.markdown', $PluginInfo));
 }
-
-if(!file_exists($Dir.DS.'models')){
-  print 'Creating models folder'.EOL;
-  mkdir($Dir.DS.'models',0755);
-  file_put_contents($Dir.DS.'models'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'models.tpl.txt', $PluginInfo));
-}
-
-if(!file_exists($Dir.DS.'views')){
-  print 'Creating views folder'.EOL;
-  mkdir($Dir.DS.'views',0755);
-  file_put_contents($Dir.DS.'views'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'views.tpl.txt', $PluginInfo));
-}
-
-if(!file_exists($Dir.DS.'design')){
-  print 'Creating design folder'.EOL;
-  mkdir($Dir.DS.'design',0755);
-  file_put_contents($Dir.DS.'design'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'design.tpl.txt', $PluginInfo));
-}
-
-if(!file_exists($Dir.DS.'js')){
-  print 'Creating js folder'.EOL;
-  mkdir($Dir.DS.'js',0755);
-  file_put_contents($Dir.DS.'js'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'js.tpl.txt', $PluginInfo));
-}
-
-if(!file_exists($Dir.DS.'library')){
-  print 'Creating library folder'.EOL;
-  mkdir($Dir.DS.'library',0755);
-  file_put_contents($Dir.DS.'library'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'library.tpl.txt', $PluginInfo));
+  
+if(!$IsLight){
+  if(!file_exists($Dir.DS.'models')){
+    print 'Creating models folder'.EOL;
+    mkdir($Dir.DS.'models',0755);
+    file_put_contents($Dir.DS.'models'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'models.tpl.txt', $PluginInfo));
+  }
+  
+  if(!file_exists($Dir.DS.'views')){
+    print 'Creating views folder'.EOL;
+    mkdir($Dir.DS.'views',0755);
+    file_put_contents($Dir.DS.'views'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'views.tpl.txt', $PluginInfo));
+  }
+  
+  if(!file_exists($Dir.DS.'design')){
+    print 'Creating design folder'.EOL;
+    mkdir($Dir.DS.'design',0755);
+    file_put_contents($Dir.DS.'design'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'design.tpl.txt', $PluginInfo));
+  }
+  
+  if(!file_exists($Dir.DS.'js')){
+    print 'Creating js folder'.EOL;
+    mkdir($Dir.DS.'js',0755);
+    file_put_contents($Dir.DS.'js'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'js.tpl.txt', $PluginInfo));
+  }
+  
+  if(!file_exists($Dir.DS.'library')){
+    print 'Creating library folder'.EOL;
+    mkdir($Dir.DS.'library',0755);
+    file_put_contents($Dir.DS.'library'.DS.'readme.txt', ParseTemplate($ScaffoldDir.DS.'library.tpl.txt', $PluginInfo));
+  }
 }
 
 if (!file_exists($Dir.DS.'icon.png')) {
@@ -275,3 +287,7 @@ if (!file_exists($Dir.DS.'icon.png')) {
 }
 
 RefactorClass($PluginFile, 'Gdn_Plugin', ArrayI('Index', $PluginInfo, $DirName).'UI' , '[A-Za-z][A-Za-z0-9]+');
+
+if($IsLight){
+  RefactorClass($Dir.DS.'class.ui.php', ArrayI('Index', $PluginInfo, $DirName).'[A-Za-z0-9]+', ArrayI('Index', $PluginInfo, $DirName).'Utility' , '[A-Za-z][A-Za-z0-9]+');
+}

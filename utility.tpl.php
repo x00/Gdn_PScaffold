@@ -132,7 +132,7 @@ abstract class {{Index}}Utility extends Gdn_Plugin {
    * 
    * @param string $View name of view
    * 
-   * @Return string Absolute path of view
+   * @return string Absolute path of view
    * 
    */
 
@@ -156,7 +156,7 @@ abstract class {{Index}}Utility extends Gdn_Plugin {
    *  
    *  Typically set in Base_BeforeLoadRoutes_Handler
    *  
-   *  @param string &$Routes loaded
+   *  @param string $Routes loaded
    *  @param string $Route RegExp of route
    *  @param string $Destination to rout to
    *  @param string $Type of redirect (optional), default 'Internal' options Internal,Temporary,Permanent,NotAuthorized,NotFound 

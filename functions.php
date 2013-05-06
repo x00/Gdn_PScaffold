@@ -320,13 +320,15 @@ function AbsPath($Path){
   
   $PosixID = posix_geteuid();
   
+  $Rel = (!strlen($Path) || strpos($Path,':')===false && substr($Path,0,1)!=DS);
+  
   if($PosixID && strpos($Path,'~'.DS)===0){
     $UserInfo = posix_getpwuid($PosixID);
     $Path = $UserInfo['dir'].DS.substr($Path,2);
   }else if($PosixID && strpos($Path,'~')===0){
     $UserInfo = posix_getpwuid(0);
     $Path = $UserInfo['dir'].DS.substr($Path,1);
-  }else if(!strlen($Path) || strpos($Path,':')===false && substr($Path,0,1)!=DS){
+  }else if($Rel){
     $Path=getcwd().DS.$Path;
   }
  
@@ -348,7 +350,7 @@ function AbsPath($Path){
   if(file_exists($Path) && linkinfo($Path)>0)
     $Path=readlink($Path);
   
-  $Path=!substr($Path,0,1)!=DS ? DS.$Path : $Path;
+  $Path=$Rel ? DS.$Path : $Path;
   
   return $Path;
 }
