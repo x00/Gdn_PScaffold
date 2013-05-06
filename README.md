@@ -212,6 +212,15 @@ OPTIONS
   --help 
     will bring up this help file
     
+  --light
+    stripped down plugins with:
+    ./class.yourplugin.php
+    ./class.ui.php
+    [optional additional abstract classes]
+    ./class.utility.php
+    ./icon.png
+    ./readme.markdown
+
 AUTHORS
 
   Paul Thomas
