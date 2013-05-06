@@ -1,0 +1,9 @@
+You can add your scripts here
+
+Add style sheet like so
+
+$Sender->AddJsFile('somescript.js', 'plugins/{{Index}}');
+
+or
+
+$Sender->AddJsFile($this->GetResource('design/somescript.js', FALSE, FALSE));

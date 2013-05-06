@@ -1,0 +1,19 @@
+He you can add libraries 
+
+You an include them like so 
+
+include_once 'includefile.php';
+
+or
+
+Gdn::FactoryInstall('theResourceLabel','theResorce',$this->GetResorce('library/theresource/includefile.php'));
+
+$Resource = Gdn::Factory('theResource');
+
+where theResouse is the main class name of the resource
+
+or
+
+Gdn::FactoryInstall('theResourceLabel','theResorce',$this->GetResorce('library/theresource/includefile.php'),Gdn::FactorySingleton);
+
+if it is a singleton

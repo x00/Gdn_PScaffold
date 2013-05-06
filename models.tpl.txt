@@ -1,0 +1,3 @@
+Models with be added automatically if you name them class.somenamemodel.php
+
+Makes sure it begins in class and ends in model.php

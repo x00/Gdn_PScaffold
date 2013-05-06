@@ -1,0 +1,19 @@
+You can add you views here.
+
+Name them like so: viewname.php
+
+The recommended way to add views
+
+is to use $this->SetThemeView(); 
+
+It will allow users to copy the view to their theme 
+in themes/the_theme/views/plugins/{{Index}}/
+
+e.g.
+
+$Sender->View=$this->ThemeView('viewname');
+$Sender->Render();
+
+or 
+
+$Sender->Render($this->ThemeView('viewname'));

@@ -1,0 +1,10 @@
+You can add your style sheets and images here
+
+Add style sheets like so
+
+$Sender->AddCssFile('somestyle.css', 'plugins/{{Index}}');
+
+or
+
+$Sender->AddCssFile($this->GetResource('design/somestyle.css', FALSE, FALSE));
+

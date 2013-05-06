@@ -1,0 +1,4 @@
+<?php
+$Conf['Author'] = 'Your Name';
+$Conf['AuthorUrl'] = 'http://vanillaforums.org/profile/yournick';
+$Conf['AuthorEmail'] = 'your@email.com';
