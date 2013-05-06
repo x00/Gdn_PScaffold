@@ -112,9 +112,9 @@ function ParseTemplateCallback($Match, $SetArgs = FALSE) {
 }
 
 
-function RefactorClass($File, $ExtendsClass, $ExtendsClassReplace, $Class, $ClassReplace = ''){
+function RefactorClass($File, $ExtendsClass, $ExtendsClassReplace, $Class, $ClassReplace = '', $Silent = FALSE){
 
-  RefactorClassCallback(array('ExtendsClassReplace' => $ExtendsClassReplace, 'ClassReplace' => $ClassReplace), TRUE);
+  RefactorClassCallback(array('ExtendsClassReplace' => $ExtendsClassReplace, 'ClassReplace' => $ClassReplace, 'Silent' => TRUE), TRUE);
   $String = file_get_contents($File);
 
   $Result = preg_replace_callback('`(?P<ClassPadding>[ \t]*)(?P<ClassOpening>abstract\s+class\s+|class\s+)(?P<Class>'.$Class.')(?P<ClassMiddle>\s+extends\s+)(?P<ExtendsClass>'.$ExtendsClass.')`i', 'RefactorClassCallback', $String);
@@ -130,6 +130,10 @@ function RefactorClassCallback($Match, $SetArgs = FALSE) {
   }
   $Args['ClassReplace'] = $Args['ClassReplace']!='' ? $Args['ClassReplace'] : $Match['Class'];
   $Args['ExtendsClassReplace'] = $Args['ExtendsClassReplace']!='' ? $Args['ExtendsClassReplace'] : $Match['ExtendsClass'];
+  
+  if($Args['Silent']){
+   return  "{$Match['ClassPadding']}{$Match['ClassOpening']}{$Args['ClassReplace']}{$Match['ClassMiddle']}{$Args['ExtendsClassReplace']}";
+  }
   $Result = <<<EOT
 {$Match['ClassPadding']}/*
 {$Match['ClassPadding']}*  @@ GDN Plugin Scaffold Refactor class @@

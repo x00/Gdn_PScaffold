@@ -212,7 +212,7 @@ if(!$PluginFile){
     file_put_contents($Dir.DS.'ps_example'.DS.'class.ui.php', ParseTemplate($ScaffoldDir.DS.'ui.tpl.php', $PluginInfo));
     file_put_contents($Dir.DS.'ps_example'.DS.'readme.markdown', ParseTemplate($ScaffoldDir.DS.'readme.tpl.markdown', $PluginInfo));
     if($IsLight){
-       RefactorClass($Dir.DS.'ps_example'.DS.'class.ui.php', ArrayI('Index', $PluginInfo, $DirName).'[A-Za-z0-9]+', ArrayI('Index', $PluginInfo, $DirName).'Utility' , '[A-Za-z][A-Za-z0-9]+');
+       RefactorClass($Dir.DS.'ps_example'.DS.'class.ui.php', ArrayI('Index', $PluginInfo, $DirName).'[A-Za-z0-9]+', ArrayI('Index', $PluginInfo, $DirName).'Utility' , '[A-Za-z][A-Za-z0-9]+', '', TRUE);
     }
     print 'Creating ps_example plugin files in ps_example!'.EOL;
     
@@ -289,5 +289,5 @@ if (!file_exists($Dir.DS.'icon.png')) {
 RefactorClass($PluginFile, 'Gdn_Plugin', ArrayI('Index', $PluginInfo, $DirName).'UI' , '[A-Za-z][A-Za-z0-9]+');
 
 if($IsLight){
-  RefactorClass($Dir.DS.'class.ui.php', ArrayI('Index', $PluginInfo, $DirName).'[A-Za-z0-9]+', ArrayI('Index', $PluginInfo, $DirName).'Utility' , '[A-Za-z][A-Za-z0-9]+');
+  RefactorClass($Dir.DS.'class.ui.php', ArrayI('Index', $PluginInfo, $DirName).'[A-Za-z0-9]+', ArrayI('Index', $PluginInfo, $DirName).'Utility' , '[A-Za-z][A-Za-z0-9]+', '', TRUE);
 }
