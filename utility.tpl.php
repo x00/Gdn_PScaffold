@@ -5,10 +5,10 @@ abstract class {{Index}}Utility extends Gdn_Plugin {
    * @@ GDN Plugin Scaffold Utility Method @@
    *
    * Loading the mini framework / scaffold
-   * 
+   *
    * First loads models matching model/class.*model.php
    * Then all class.*.php in plugin root
-   * 
+   *
    * @return @void
    */
 
@@ -26,29 +26,29 @@ abstract class {{Index}}Utility extends Gdn_Plugin {
 
     foreach ($PluginFiles As $PluginFile)
       include_once($PluginRoot.DS.basename($PluginFile));
-    	
+     
      
   }
 
   /**
    * @@ GDN Plugin Scaffold Utility Method @@
-   * 
-   * Used with HotLoad 
-   * 
+   *
+   * Used with HotLoad
+   *
    * Required abstract method
    * @abstract
    */
 
   abstract function PluginSetup();
-  
+
   /**
    * @@ GDN Plugin Scaffold Utility Method @@
    *
    * Way to ensure any new db struture gets created
    * And new setup is allied without
-   * 
+   *
    * @param bool $Force do regardless of version change (optional) default FALSE
-   * 
+   *
    * @return void
    */
 
@@ -65,17 +65,17 @@ abstract class {{Index}}Utility extends Gdn_Plugin {
    *
    * Pluggable dispatcher
    * e.g. public function PluginNameController_Test_Create($Sender){}
-   * 
+   *
    * or
-   * 
+   *
    * public function Controller_Test($Sender){}
-   * 
+   *
    * Internally
-   * 
+   *
    * @param string $Sender the Controller object from which to dispatch from
    * @param string $PluggablePrefix for new methods in other plugins (optional) default behaviour is  {{Index}}.Controller_
    * @param string $LocalPrefix for new methods locally (optional) default behaviour is Controller_
-   * 
+   *
    * @return void
    */
 
@@ -87,34 +87,33 @@ abstract class {{Index}}Utility extends Gdn_Plugin {
     $Plugin = $this;
 
     $ControllerMethod = '';
-    if (count($Sender->RequestArgs)) {
-      $DeclaredClasses = get_declared_classes();
-
+    if(count($Sender->RequestArgs)){
       list($MethodName) = $Sender->RequestArgs;
-
-      $TempControllerMethod = $LocalPrefix.$MethodName;
-      if (method_exists($Plugin, $TempControllerMethod)){
-        $ControllerMethod = $TempControllerMethod;
-      }
-      if(!$ControllerMethod){
-        $TempControllerMethod = $PluggablePrefix.$MethodName.'_Create';
-
-        foreach ($DeclaredClasses as $ClassName) {
-          if (Gdn::PluginManager()->GetPluginInfo($ClassName)){
-            $CurrentPlugin = Gdn::PluginManager()->GetPluginInstance($ClassName);
-            if($CurrentPlugin && method_exists($CurrentPlugin, $TempControllerMethod)){
-              $Plugin = $CurrentPlugin;
-              $ControllerMethod = $TempControllerMethod;
-              break;
-            }
-          }
-        }
-
-      }
-       
+    }else{
+      $MethodName = '_Index';
     }
 
-    $ControllerMethod = $ControllerMethod ? $ControllerMethod : 'Controller_Index';
+    $DeclaredClasses = get_declared_classes();
+
+    $TempControllerMethod = $LocalPrefix.$MethodName;
+    if (method_exists($Plugin, $TempControllerMethod)){
+      $ControllerMethod = $TempControllerMethod;
+    }
+    if(!$ControllerMethod){
+      $TempControllerMethod = $PluggablePrefix.$MethodName.'_Create';
+
+      foreach ($DeclaredClasses as $ClassName) {
+        if (Gdn::PluginManager()->GetPluginInfo($ClassName)){
+          $CurrentPlugin = Gdn::PluginManager()->GetPluginInstance($ClassName);
+          if($CurrentPlugin && method_exists($CurrentPlugin, $TempControllerMethod)){
+            $Plugin = $CurrentPlugin;
+            $ControllerMethod = $TempControllerMethod;
+            break;
+          }
+        }
+      }
+
+    }
 
     if (method_exists($Plugin, $ControllerMethod)) {
       $Sender->Plugin = $Plugin;
@@ -129,11 +128,11 @@ abstract class {{Index}}Utility extends Gdn_Plugin {
    *
    * Set view that can be copied over to current theme
    * e.g. view.php -> themes/the_theme/views/plugins/{{Index}}/view.php
-   * 
+   *
    * @param string $View name of view
-   * 
+   *
    * @return string Absolute path of view
-   * 
+   *
    */
 
   protected function ThemeView($View){
@@ -151,17 +150,17 @@ abstract class {{Index}}Utility extends Gdn_Plugin {
   }
   /**
    *  @@ GDN Plugin Scaffold @@
-   *  
+   *
    *  Add a route on the fly
-   *  
+   *
    *  Typically set in Base_BeforeLoadRoutes_Handler
-   *  
+   *
    *  @param string $Routes loaded
    *  @param string $Route RegExp of route
    *  @param string $Destination to rout to
-   *  @param string $Type of redirect (optional), default 'Internal' options Internal,Temporary,Permanent,NotAuthorized,NotFound 
+   *  @param string $Type of redirect (optional), default 'Internal' options Internal,Temporary,Permanent,NotAuthorized,NotFound
    *  @param bool $OneWay if an Internal request prevents direct access to destination  (optional), default FALSE
-   *  
+   *
    *  @return void
    */
 
@@ -170,8 +169,8 @@ abstract class {{Index}}Utility extends Gdn_Plugin {
     $Routes[$Key] = array($Destination, $Type);
     if($Oneway && $Type == 'Internal'){
       if(strpos(strtolower($Destination), strtolower(Gdn::Request()->Path()))===0){
-         Gdn::Dispatcher()->Dispatch('Default404');
-         exit;
+        Gdn::Dispatcher()->Dispatch('Default404');
+        exit;
       }
     }
   }

@@ -94,7 +94,7 @@ class {{Index}} extends {{Index}}UI{
  *  }
  *  
  *  protected function SettingsController_{{Index}}_Create($Sender, &$Args){
- *  	$this->Settings_Index($Sender, $Args)
+ *  	$this->Settings_{{Index}}($Sender, $Args)
  *  }
  */
   

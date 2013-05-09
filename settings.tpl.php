@@ -14,7 +14,7 @@ abstract class {{Index}}Settings extends {{Index}}API {
   }
 
 
-  protected function Settings_Index($Sender, &$Args){
+  protected function Settings_{{Index}}($Sender, &$Args){
     $Sender->Permission('Garden.Settings.Manage');
     $Sender->Render($this->ThemeView('settings'));
   }

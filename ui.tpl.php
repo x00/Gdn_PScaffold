@@ -8,13 +8,13 @@ abstract class {{Index}}UI extends {{Index}}Settings {
    *
    * protected function Name_YourMethod($Sender, &$Args){
    * 	// yada yada
-   *		$Sender->Render($this->ThemeView('yourview'));
+   *	$Sender->Render($this->ThemeView('yourview'));
    * }
    *
    * protected function Name_PseudoController($Sender, &$Args){
-   * 	$this->AddCssFile($this->GetResource('design/somestyle.css', FALSE, FALSE));
-   *   $this->AddCssFile($this->GetResource('js/somescript.js', FALSE, FALSE));
-   *		$this->MiniDispatcher($Sender,'PseudoController','PseudoController');
+   * 	$Sender->AddCssFile($this->GetResource('design/somestyle.css', FALSE, FALSE));
+   *  $Sender->AddCssFile($this->GetResource('js/somescript.js', FALSE, FALSE));
+   *	$this->MiniDispatcher($Sender,'PseudoController','PseudoController');
    * }
    *
    * public function PseudoController_Index($Sender){

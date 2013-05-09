@@ -354,6 +354,8 @@ function AbsPath($Path){
   if(file_exists($Path) && linkinfo($Path)>0)
     $Path=readlink($Path);
   
+  $Rel = (!strlen($Path) || strpos($Path,':')===false && substr($Path,0,1)!=DS);
+  
   $Path=$Rel ? DS.$Path : $Path;
   
   return $Path;
