@@ -79,15 +79,15 @@ $IsLight = ArrayI('light',$Options,NULL)!==NULL;
 $PluginGlob = glob($Dir.DS.'*plugin.php');
 
 foreach($PluginGlob As $File){
-  if(strtolower(basename($File))=='class.'.strtolower($DirName).'plugin.php'){
+  if(strtolower(basename($File))=='class.'.strtolower($DirName).'plugin.php' ||
+     strtolower(basename($File))=='class.'.strtolower($DirName).'.plugin.php' ){
     $PluginFile = $File;
     break;
   }
 }
 
 if(!$PluginFile && count($PluginGlob)){
-  exit('Error: plugin file does not match class.'.strtolower($DirName).'plugin.php'.EOL);
-  
+  exit('Error: plugin file does not match class.'.strtolower($DirName).'.plugin.php'.EOL);
 }
 
 $ReadMe = FileContents($ScaffoldDir.DS.'README.md');
@@ -182,8 +182,8 @@ if(!$PluginFile){
   $PluginInfo['LongDescription'] = AskInputMultiLine($Questions['LongDescription']);
   $PluginInfo['Version'] = AskValidateInput($Questions['Version'],'`^[\.0-9a-z,+\-_]+$`i',$QuestionsInvaild['Version']);
   $PluginInfo['SettingsUrl'] = 'settings/'.strtolower($DirName);
-  print 'Creating plugin file class.'.strtolower($DirName).'plugin.php'.EOL;
-  $PluginFile = $Dir.DS.'class.'.strtolower($DirName).'plugin.php';
+  print 'Creating plugin file class.'.strtolower($DirName).'.plugin.php'.EOL;
+  $PluginFile = $Dir.DS.'class.'.strtolower($DirName).'.plugin.php';
   file_put_contents($PluginFile, ParseTemplate($ScaffoldDir.DS.'plugin.tpl.php', $PluginInfo));
 }else{
   $Plugin = file_get_contents($PluginFile);
@@ -203,7 +203,7 @@ if(!$PluginFile){
     if(!file_exists($Dir.DS.'ps_example')){
       mkdir($Dir.DS.'ps_example',0755);
     }
-    file_put_contents($Dir.DS.'ps_example'.DS.basename($PluginFile), ParseTemplate($ScaffoldDir.DS.'plugin.tpl.php', $PluginInfo));
+    file_put_contents($Dir.DS.'ps_example'.DS.basename($PluginFile), ParseTemplate($ScaffoldDir.DS.'.plugin.tpl.php', $PluginInfo));
     file_put_contents($Dir.DS.'ps_example'.DS.'class.utility.php', ParseTemplate($ScaffoldDir.DS.'utility.tpl.php', $PluginInfo));
     if(!$IsLight){
       file_put_contents($Dir.DS.'ps_example'.DS.'class.api.php', ParseTemplate($ScaffoldDir.DS.'api.tpl.php', $PluginInfo));
